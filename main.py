@@ -9,7 +9,14 @@ text = load_dataset('wikitext', 'wikitext-2-raw-v1', split="train")
 
 # Preprocessing: Get lemmas, ignoring punctuation and numbers
 def preprocess(text):
-    docs = [nlp(line['text']) for line in text]
+    '''Preprocess the text data
+    Args:
+        text: List of dictionaries with 'text' key
+    Returns:
+        List of lists of lemmatized tokens
+    '''
+    for line in text:
+        docs = [nlp(line['text'])]
     processed_text = []
     for doc in docs:
         tokens = [token.lemma_.lower() for token in doc if token.is_alpha]
@@ -19,6 +26,12 @@ def preprocess(text):
 train_data = preprocess(text)
 
 def train_unigram(train_data):
+    '''Train a unigram model on the given data.
+    Args:
+        train_data: List of lists of tokens
+    Returns:
+        Dictionary with unigram probabilities
+    '''
     unigram_counts = Counter()
     total_tokens = 0
 
@@ -30,6 +43,12 @@ def train_unigram(train_data):
     return unigram_probs
 
 def train_bigram(train_data):
+    '''Train a bigram model on the given data.
+    Args:
+        train_data: List of lists of tokens
+    Returns:
+        Dictionary with bigram probabilities
+    '''
     bigram_counts = defaultdict(Counter)
     unigram_counts = Counter()
     total_bigrams = 0
@@ -48,13 +67,29 @@ def train_bigram(train_data):
     return bigram_probs
 
 def predict_next_word(bigram_probs, context):
+    '''Predict the next word given a context.
+    Args:
+        bigram_probs: Dictionary with bigram probabilities
+        context: The context word
+    Returns:
+        The most likely next word
+    '''
     next_word_probs = bigram_probs.get(context, {})
-    return max(next_word_probs, key=next_word_probs.get) if next_word_probs else None
+    if next_word_probs:
+        return max(next_word_probs, key=next_word_probs.get)
+    return None
 
 bigram_probs = train_bigram(train_data)
 print(predict_next_word(bigram_probs, 'in'))
 
 def compute_sentence_probability(sentence, bigram_probs):
+    '''Compute the probability of a sentence given a bigram model.
+    Args:
+        sentence: The sentence to compute the probability of
+        bigram_probs: Dictionary with bigram probabilities
+    Returns:
+        The log probability of the sentence
+    '''
     sentence = ['<START>'] + sentence.lower().split()
     prob = 0
     for i in range(len(sentence) - 1):
@@ -63,11 +98,28 @@ def compute_sentence_probability(sentence, bigram_probs):
     return prob
 
 def compute_perplexity(sentences, bigram_probs):
+    '''Compute the perplexity of a list of sentences given a bigram model.
+    Args:
+        sentences: List of sentences
+        bigram_probs: Dictionary with bigram probabilities
+    Returns:
+        The perplexity of the sentences
+    '''
     total_log_prob = sum(compute_sentence_probability(sent, bigram_probs) for sent in sentences)
     n = sum(len(sent.split()) + 1 for sent in sentences)  # +1 for START token
     return math.exp(-total_log_prob / n)
 
 def interpolate_models(unigram_probs, bigram_probs, sentence, lambda_bigram=2/3, lambda_unigram=1/3):
+    '''Compute the interpolated probability of a sentence given unigram and bigram models.
+    Args:
+        unigram_probs: Dictionary with unigram probabilities
+        bigram_probs: Dictionary with bigram probabilities
+        sentence: The sentence to compute the probability of
+        lambda_bigram: Weight for bigram model
+        lambda_unigram: Weight for unigram model
+    Returns:
+        The log probability of the sentence
+    '''
     sentence = ['<START>'] + sentence.lower().split()
     prob = 0
     for i in range(len(sentence) - 1):
@@ -79,3 +131,7 @@ def interpolate_models(unigram_probs, bigram_probs, sentence, lambda_bigram=2/3,
 
 interpolated_prob = interpolate_models(unigram_probs, bigram_probs, "Brad Pitt was born in Oklahoma")
 perplexity = compute_perplexity(["Brad Pitt was born in Oklahoma", "The actor was born in USA"], bigram_probs)
+
+if __name__ == '__main__':
+    print(interpolated_prob)
+    print(perplexity)
