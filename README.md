@@ -58,14 +58,14 @@ Question 2; predict the next word in the sentence
 I have house in... the
 **************************************************
 Question 3.a; Compute the probability of a sentence using the bigram model
-The probability of the sentence  Brad Pitt was born in Oklahoma  is: -inf
-The probability of the sentence  The actor was born in USA  is: -29.729887174236524
+The probability of the sentence " Brad Pitt was born in Oklahoma " is: -inf
+The probability of the sentence " The actor was born in USA " is: -29.729887174236524
 **************************************************
 Question 3.b; Compute the perplexity of the two sentences using the bigram model
 The perplexity of the two sentences is: inf
 **************************************************
 Question 4; Compute the interpolated probability of the sentence, using the unigram with lambda=1/3 and bigram with lambda=2/3
-The interpolated probability of the sentence  Brad Pitt was born in Oklahoma  is: -inf
-The interpolated probability of the sentence  The actor was born in USA  is: -inf
+The interpolated probability of the sentence " Brad Pitt was born in Oklahoma " is: -43.524780888941436
+The interpolated probability of the sentence " The actor was born in USA " is: -38.13268426445011
 
 ---

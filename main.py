@@ -154,12 +154,12 @@ def interpolate_models(unigram_probs, bigram_probs, sentence, lambda_bigram=2/3,
         
         if unigram_prob == 0 and bigram_prob == 0: #if the word is not in either model, return negative infinity
             return float('-inf')
-        
+
         combined_prob = lambda_bigram * bigram_prob + lambda_unigram * unigram_prob
         if combined_prob == 0:
             return float('-inf')
         log_prob += math.log(combined_prob)
-    
+
     return log_prob
 
 if __name__ == '__main__':
@@ -184,8 +184,8 @@ if __name__ == '__main__':
 
     sentence_1_prob = compute_sentence_probability(Sentences[0], bigram_probs)
     sentence_2_prob = compute_sentence_probability(Sentences[1], bigram_probs)
-    print('The probability of the sentence ', Sentences[0], ' is:', sentence_1_prob)
-    print('The probability of the sentence ', Sentences[1], ' is:', sentence_2_prob)
+    print('The probability of the sentence "', Sentences[0], '" is:', sentence_1_prob)
+    print('The probability of the sentence "', Sentences[1], '" is:', sentence_2_prob)
 
     print('**************************************************')
     print('Question 3.b; Compute the perplexity of the two sentences using the bigram model')
@@ -196,8 +196,8 @@ if __name__ == '__main__':
     print('Question 4; Compute the interpolated probability of the sentence, using the unigram with lambda=1/3 and bigram with lambda=2/3')
     interpolated_prob_1 = interpolate_models(unigram_probs, bigram_probs, Sentences[0]) # Interpolate unigram and bigram models
     interpolated_prob_2 = interpolate_models(unigram_probs, bigram_probs, Sentences[1]) # Interpolate unigram and bigram models
-    print('The interpolated probability of the sentence ', Sentences[0], ' is:', interpolated_prob_1)
-    print('The interpolated probability of the sentence ', Sentences[1], ' is:', interpolated_prob_2)
+    print('The interpolated probability of the sentence "', Sentences[0], '" is:', interpolated_prob_1)
+    print('The interpolated probability of the sentence "', Sentences[1], '" is:', interpolated_prob_2)
 
 
 
