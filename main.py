@@ -145,7 +145,8 @@ def interpolate_models(unigram_probs, bigram_probs, sentence, lambda_bigram=2/3,
     Returns:
         The log probability of the sentence
     '''
-    sentence = ['<START>'] + sentence.lower().split()
+    doc = nlp(sentence.lower())
+    sentence = ['<START>'] + [token.lemma_ for token in doc if token.is_alpha]
     log_prob = 0
     
     for i in range(len(sentence) - 1):

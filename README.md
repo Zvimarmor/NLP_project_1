@@ -65,7 +65,7 @@ Question 3.b; Compute the perplexity of the two sentences using the bigram model
 The perplexity of the two sentences is: inf
 **************************************************
 Question 4; Compute the interpolated probability of the sentence, using the unigram with lambda=1/3 and bigram with lambda=2/3
-The interpolated probability of the sentence " Brad Pitt was born in Oklahoma " is: -43.524780888941436
-The interpolated probability of the sentence " The actor was born in USA " is: -38.13268426445011
+The interpolated probability of the sentence " Brad Pitt was born in Oklahoma " is: -36.22151399120224
+The interpolated probability of the sentence " The actor was born in USA " is: -31.010738272426153
 
 ---
